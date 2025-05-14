@@ -36,6 +36,8 @@ build/
 /resouces/
 /.idea/
 /.mvn/
-
+pom.xml
+mvnw
+mvnw.cmd
 ### Mac OS ###
 .DS_Store
