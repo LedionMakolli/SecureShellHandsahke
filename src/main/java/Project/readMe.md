@@ -39,4 +39,5 @@ Ky projekt simulon nje lidhje te sigurte SSH mes nje serveri dhe nje klienti duk
 - Lexon identifikimin e serverit (nese eshte ne modalitetin interaktiv)
 - Kryesn shkembimin **Diffie-Hellman (DH)** dhe verifikon nenshkrimin **RSA**
 - Derivon celesin e sesionit dhe vendos kanalin e sigurt
+![run0](https://github.com/user-attachments/assets/a2e12187-ff49-4201-b1b6-3b4680e3aee8)
 
