@@ -28,7 +28,7 @@ Ky projekt simulon nje lidhje te sigurte SSH mes nje serveri dhe nje klienti duk
 # SSHServer.java
 - Gjeneron celesat RSA per autentikim
 - Gjeneron parametrat DH per shkembimin e celesave
-- Pret klientin dhe ekzekuton:
+- **Pret klientin dhe ekzekuton**:
       - **Identifikimi i serverit**
       - **Shkembimi i celesave DH**
       - **Autentikimi i serverit me nenshkrim RSA**
