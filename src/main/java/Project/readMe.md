@@ -26,13 +26,13 @@ Ky projekt simulon nje lidhje te sigurte SSH mes nje serveri dhe nje klienti duk
 # Pershkrimi i moduleve 
 
 # SSHServer.java
-* Gjeneron celesat RSA per autentikim
-* Gjeneron parametrat DH per shkembimin e celesave
-* Pret klientin dhe ekzekuton:
-      - Identifikimi i serverit
-      - Shkembimi i celesave DH
-      - Autentikimi i serverit me nenshkrim RSA
-      - Gjenerimi i celesave te sesionit me HKDF
+- Gjeneron celesat **RSA** per autentikim
+- Gjeneron parametrat **Diffie-Hellman (DH)** per shkembimin e celesave
+- Pret klientin dhe ekzekuton proceset:
+   - Identifikimi i serverit
+   - Shkembimi i celesave DH
+   - Autentikimi i serverit me nenshkrim RSA
+   - Gjenerimi i celesave te sesionit me **HKDF**
 
 # SSHClient.java
 - Lidhja me serverin ne menyre direkte ose interaktive
