@@ -6,21 +6,21 @@ Ky projekt simulon nje lidhje te sigurte SSH mes nje serveri dhe nje klienti duk
 
 1.**Kompiloni te dyja klasat:**
 
-javac project /SSHServer.java
-javac project/SSHClient.java
+  javac project /SSHServer.java
+  javac project/SSHClient.java
 
 2.**Startoni me pare serverin:**
 
-java project.SSHServer
+  java project.SSHServer
 
 3.**Startoni klientin:**
 
-java project.SSHClient
+  java project.SSHClient
 
 4.**Zgjidhni modalitetin e lidhjes:**
 
-- Lidhje direkte(output minimal)
-- Lidhje interaktive (shfaqet cdo hap)
+  - Lidhje direkte(output minimal)
+  - Lidhje interaktive (shfaqet cdo hap)
 
 
 # Pershkrimi i moduleve 
