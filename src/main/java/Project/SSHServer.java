@@ -61,10 +61,10 @@ public class SSHServer {
             identification.put("server_id", "SSH_Server_1.0");
 
             Map<String, List<String>> algorithms = new HashMap<>();
-            algorithms.put("kex", Arrays.asList("diffie-hellman-group14-sha256"));
-            algorithms.put("hostkey", Arrays.asList("ssh-rsa"));
-            algorithms.put("encryption", Arrays.asList("aes256-ctr"));
-            algorithms.put("mac", Arrays.asList("hmac-sha256"));
+            algorithms.put("kex", Arrays.asList("diffie-hellman-group14-sha256"));// algoritmi per shkembim celesave
+            algorithms.put("hostkey", Arrays.asList("ssh-rsa")); // algoritmi per nenshkrimin e celesit te serverit
+            algorithms.put("encryption", Arrays.asList("aes256-ctr")); // algoritmi per enkriptim
+            algorithms.put("mac", Arrays.asList("hmac-sha256")); // algoritmi per kodin e verifikimit te mesazhit
 
             identification.put("supported_algorithms", algorithms);
 
@@ -73,36 +73,36 @@ public class SSHServer {
         }
 
         private byte[] performKeyExchange() throws Exception {
-            // Generate DH key pair
+            // Gjeneron cift celesash per algoritmin Diffie-Hellman
             KeyPairGenerator dhKpairGen = KeyPairGenerator.getInstance("DH");
             dhKpairGen.initialize(dhParams);
             dhKeyPair = dhKpairGen.generateKeyPair();
 
-            // Send server's DH public key
+            // Dergon celesin publik DH te serverit
             out.writeObject(dhKeyPair.getPublic());
             out.flush();
 
-            // Receive client's DH public key
+            // Pranon celesin publik DH te klientit
             PublicKey clientDhPublicKey = (PublicKey) in.readObject();
 
-            // Perform key agreement
+            // key agreement
             keyAgreement = KeyAgreement.getInstance("DH");
             keyAgreement.init(dhKeyPair.getPrivate());
             keyAgreement.doPhase(clientDhPublicKey, true);
-
+            // Gjeneron sekretin e perbashket
             byte[] sharedSecret = keyAgreement.generateSecret();
             return sharedSecret;
         }
 
 
         private void authenticateServer(byte[] sharedSecret) throws Exception {
-            // Sign the shared secret
+            // Nenshkruan sekretin e perbashket me celesin privat te serverit
             Signature signature = Signature.getInstance("SHA256withRSA");
             signature.initSign(privateKey);
             signature.update(sharedSecret);
             byte[] signed = signature.sign();
 
-            // Send server's public key and signature
+            // Dergon celesin publik te serverit dhe nenshkrimin
             Map<String, Object> authData = new HashMap<>();
             authData.put("public_key", publicKey);
             authData.put("signature", signed);
@@ -112,11 +112,11 @@ public class SSHServer {
         }
 
         private void generateSessionKeys(byte[] sharedSecret) throws Exception {
-            // Derive session keys using HKDF
+            // Derivon celesat e sesionit duke perdorur HKDF mbi sekretin e perbashket
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
             byte[] prk = digest.digest(sharedSecret);
 
-            // Derive encryption key (simplified)
+            // Derivon celesin e enkriptimit
             byte[] info = "session keys".getBytes();
             byte[] okm = new byte[32];
 
@@ -137,7 +137,7 @@ public class SSHServer {
                 remaining -= toCopy;
             }
 
-            // Send confirmation to client
+            // Dergon konfirmim tek klienti se celesat e sesionit u krijuan me sukses
             out.writeObject("Session keys established");
             out.flush();
         }
