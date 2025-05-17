@@ -93,3 +93,53 @@ public class SSHServer {
             byte[] sharedSecret = keyAgreement.generateSecret();
             return sharedSecret;
         }
+
+
+        private void authenticateServer(byte[] sharedSecret) throws Exception {
+            // Sign the shared secret
+            Signature signature = Signature.getInstance("SHA256withRSA");
+            signature.initSign(privateKey);
+            signature.update(sharedSecret);
+            byte[] signed = signature.sign();
+
+            // Send server's public key and signature
+            Map<String, Object> authData = new HashMap<>();
+            authData.put("public_key", publicKey);
+            authData.put("signature", signed);
+
+            out.writeObject(authData);
+            out.flush();
+        }
+
+        private void generateSessionKeys(byte[] sharedSecret) throws Exception {
+            // Derive session keys using HKDF
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] prk = digest.digest(sharedSecret);
+
+            // Derive encryption key (simplified)
+            byte[] info = "session keys".getBytes();
+            byte[] okm = new byte[32];
+
+            byte[] t = new byte[0];
+            int remaining = okm.length;
+            int offset = 0;
+
+            for (int i = 1; remaining > 0; i++) {
+                digest.reset();
+                digest.update(t);
+                digest.update(info);
+                digest.update((byte) i);
+                t = digest.digest();
+
+                int toCopy = Math.min(t.length, remaining);
+                System.arraycopy(t, 0, okm, offset, toCopy);
+                offset += toCopy;
+                remaining -= toCopy;
+            }
+
+            // Send confirmation to client
+            out.writeObject("Session keys established");
+            out.flush();
+        }
+    }
+}
