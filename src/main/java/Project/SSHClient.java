@@ -63,3 +63,65 @@ public class SSHClient {
         }
     }
 }
+
+private static void interactiveConnection() {
+    System.out.println("\n=== Interactive SSH Connection ===");
+
+    try {
+        Socket socket = new Socket(SERVER_HOST, SERVER_PORT);
+        ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
+        ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
+
+        Map<String, Object> identification = (Map<String, Object>) in.readObject();
+        System.out.println("\nServer identification received:");
+        System.out.println("Server ID: " + identification.get("server_id"));
+
+        Map<String, List<String>> algorithms = (Map<String, List<String>>) identification.get("supported_algorithms");
+
+        System.out.println("\nAvailable algorithms:");
+        for (Map.Entry<String, List<String>> entry : algorithms.entrySet()) {
+            System.out.println(entry.getKey() + ": " + entry.getValue());
+        }
+
+        System.out.print("\nPress Enter to continue...");
+        scanner.nextLine();
+        scanner.nextLine();
+
+        System.out.println("\n=== Key Exchange ===");
+        System.out.println("Performing Diffie-Hellman key exchange...");
+        byte[] sharedSecret = performKeyExchange(out, in, true);
+
+        System.out.println("\n=== Server Authentication ===");
+        System.out.println("Verifying server identity...");
+        verifyServerAuthentication(in, sharedSecret, true);
+
+        System.out.println("\n=== Session Key Generation ===");
+        System.out.println("Deriving session keys...");
+        generateSessionKeys(in, sharedSecret, true);
+
+        System.out.println("\n=== Connection Established ===");
+        System.out.println("1. Start secure shell session");
+        System.out.println("2. Disconnect");
+        System.out.print("Enter choice: ");
+        String finalChoice = scanner.nextLine();
+
+        if (finalChoice.equals("1")) {
+            System.out.println("\nStarting secure session... (simulated)");
+            System.out.println("Type 'exit' to end the session");
+
+            while (true) {
+                System.out.print("ssh> ");
+                String input = scanner.nextLine();
+                if (input.equalsIgnoreCase("exit")) {
+                    break;
+                }
+                System.out.println("Command executed: " + input);
+            }
+        }
+
+        System.out.println("Disconnecting...");
+        socket.close();
+    } catch (Exception e) {
+        System.err.println("Connection failed: " + e.getMessage());
+    }
+}
