@@ -41,6 +41,8 @@ Ky projekt simulon nje lidhje te sigurte SSH mes nje serveri dhe nje klienti duk
 - Derivon celesin e sesionit dhe vendos kanalin e sigurt
 
   # Shembuj te Rezultateve te Ekzekutimit
+
+  
   
 ![run0](https://github.com/user-attachments/assets/a2e12187-ff49-4201-b1b6-3b4680e3aee8)
 
