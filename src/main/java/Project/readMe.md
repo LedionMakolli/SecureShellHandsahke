@@ -29,14 +29,14 @@ Ky projekt simulon nje lidhje te sigurte SSH mes nje serveri dhe nje klienti duk
 - Gjeneron celesat RSA per autentikim
 - Gjeneron parametrat DH per shkembimin e celesave
 - Pret klientin dhe ekzekuton:
-      - Identifikimi i serverit
-      - Shkembimi i celesave DH
-      - Autentikimi i serverit me nenshkrim RSA
-      - Gjenerimi i celesave te sesionit me HKDF
+      - **Identifikimi i serverit**
+      - **Shkembimi i celesave DH**
+      - **Autentikimi i serverit me nenshkrim RSA**
+      - **Gjenerimi i celesave te sesionit me HKDF**
 
 # SSHClient.java
-- Lidhja me serverin ne menyre direkte ose interaktive
-- Lexon identifikimin e serverit (nese eshte ne modalitetin interaktiv)
-- Kryesn shkembimin DH dhe verifikon nenshkrimin RSA
-- Derivon celesin e sesionit dhe vendos kanalin e sigurt
+- **Lidhja me serverin ne menyre direkte ose interaktive**
+- **Lexon identifikimin e serverit (nese eshte ne modalitetin interaktiv)**
+- **Kryesn shkembimin DH dhe verifikon nenshkrimin RSA**
+- **Derivon celesin e sesionit dhe vendos kanalin e sigurt**
 
