@@ -37,6 +37,6 @@ Ky projekt simulon nje lidhje te sigurte SSH mes nje serveri dhe nje klienti duk
 # SSHClient.java
 - Lidhja me serverin ne menyre direkte ose interaktive
 - Lexon identifikimin e serverit (nese eshte ne modalitetin interaktiv)
-- Kryesn shkembimin DH dhe verifikon nenshkrimin RSA
+- Kryesn shkembimin **Diffie-Hellman (DH)** dhe verifikon nenshkrimin **RSA**
 - Derivon celesin e sesionit dhe vendos kanalin e sigurt
 
