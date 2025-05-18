@@ -2,12 +2,21 @@ package Project;
 
 import javax.crypto.KeyAgreement;
 import javax.crypto.spec.DHParameterSpec;
+import javax.swing.plaf.TableHeaderUI;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutput;
+import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.security.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class SSHServer {
-    private static final int PORT = 2222;
+    private static final int PORT = 22226;
     private ServerSocket serverSocket;
     private PrivateKey privateKey;
     private PublicKey publicKey;
@@ -44,12 +53,50 @@ public class SSHServer {
                 Socket clientSocket = serverSocket.accept();
                 System.out.println("Client connected! Initiating handshake...");
 
-                //...
+                new ClinetHandler(clientSocket).start();
             }
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
+
+    private class ClinetHandler extends Thread {
+        private Socket clientSocket;
+        private ObjectOutput out;
+        private ObjectInputStream in;
+
+        public ClinetHandler(Socket socket){
+            this.clientSocket = socket;
+        }
+
+        public  void run(){
+            try {
+                out = new ObjectOutputStream(clientSocket.getOutputStream());
+                in = new ObjectInputStream(clientSocket.getInputStream());
+
+                // dergo indetifikimin e serverit
+                sendIdentification();
+
+                // performo kembimin e qelesave
+                byte[] sharedSecret = performKeyExchange();
+
+                // autorizo serverin per klient
+                authenticateServer(sharedSecret);
+
+                // gjenro seesion qelesat
+                generateSessionKeys(sharedSecret);
+
+                System.out.println("Handshake successfull. Procceding to establish secure channel...");
+
+            } catch (Exception e) {
+                System.err.println("Error handling client: " + e.getMessage());
+            }finally {
+                try{
+                    clientSocket.close();
+                }catch (IOException e){
+                    e.printStackTrace();
+                }
+        }
 }
 
 
