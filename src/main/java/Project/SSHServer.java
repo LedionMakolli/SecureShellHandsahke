@@ -27,7 +27,7 @@ public class SSHServer {
     private DHParameterSpec dhParams;
 
     public static void main(String[] args) {
-
+        new SSHServer().start();
     }
 
     public void start() {
